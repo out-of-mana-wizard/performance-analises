@@ -1,0 +1,31 @@
+config:
+  # This is a test server run by team Artillery
+  # It's designed to be highly scalable
+  target: http://localhost:3000
+  phases:
+    - duration: 10
+      arrivalRate: 1
+      rampTo: 5
+      name: Warm up phase
+    - duration: 20
+      arrivalRate: 5
+      rampTo: 10
+      name: Ramp up load
+    - duration: 60
+      arrivalRate: 10000
+      rampTo: 5
+      name: Spike phase
+  # Load & configure a couple of useful plugins
+  # https://docs.art/reference/extensions
+  plugins:
+    ensure: {}
+    apdex: {}
+    metrics-by-endpoint: {}
+  apdex:
+    threshold: 100
+  ensure:
+      maxErrorRate: 1
+scenarios:
+  - flow:
+        - get:
+            url: "/verify-prime"
